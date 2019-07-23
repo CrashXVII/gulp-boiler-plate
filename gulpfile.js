@@ -2,25 +2,36 @@ const gulp = require("gulp");
 const sass = require("gulp-sass");
 const browserSync = require("browser-sync").create();
 
+
+const paths = {
+  serve: "./dist",
+  input: {
+    js: "./src/**/*.js",
+    scss: "./src/scss/*.scss"
+  },
+  output: {
+    scss: "./dist/css/",
+    js: "./dist/js"
+  }
+}
 //compile scss into css:
 function style() {
   return gulp
-    .src("./scss/**/*.scss")
+    .src(paths.input.scss)
     .pipe(sass())
-    .pipe(gulp.dest("./css"))
-    .pipe(browserSync().stream());
+    .pipe(gulp.dest(paths.output.scss))
+    .pipe(browserSync.stream());
 }
 
 //live reloading
 function watch() {
   browserSync.init({
     server: {
-      baseDir: "./"
+      baseDir: paths.serve
     }
   });
-  gulp.watch("./scss/**/*.scss", style);
-  gulp.watch("./*.html").on("change", browserSync.reload);
-  gulp.watch("./js/**/*.js").on("change", browserSync.reload);
+  gulp.watch(paths.input.scss, style);
+  gulp.watch("./dist/**/*").on("change", browserSync.reload);
 }
-exports.watch = watch;
 exports.style = style;
+exports.watch = watch;
