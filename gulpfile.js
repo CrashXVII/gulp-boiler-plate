@@ -18,7 +18,7 @@ const paths = {
 function style() {
   return gulp
     .src(paths.input.scss)
-    .pipe(sass())
+    .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest(paths.output.scss))
     .pipe(browserSync.stream());
 }
@@ -30,8 +30,11 @@ function watch() {
       baseDir: paths.serve
     }
   });
+  //This will just update CSS, without fully reloading the page
   gulp.watch(paths.input.scss, style);
-  gulp.watch("./dist/**/*").on("change", browserSync.reload);
+  //These cause full page reloads
+  gulp.watch('./dist/*.html').on('change', browserSync.reload);
+  gulp.watch('./dist/js/*.js').on('change', browserSync.reload);
 }
 exports.style = style;
 exports.watch = watch;
