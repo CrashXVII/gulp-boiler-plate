@@ -11,7 +11,7 @@ const paths = {
   },
   output: {
     scss: "./dist/css/",
-    js: "./dist/js"
+    js: "./dist/js/"
   }
 }
 //compile scss into css:
@@ -34,7 +34,7 @@ function watch() {
   gulp.watch(paths.input.scss, style);
   //These cause full page reloads
   gulp.watch('./dist/*.html').on('change', browserSync.reload);
-  gulp.watch('./dist/js/*.js').on('change', browserSync.reload);
+  gulp.watch(paths.output.js).on('change', browserSync.reload);
 }
 exports.style = style;
 exports.watch = watch;
